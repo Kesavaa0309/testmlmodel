@@ -2,6 +2,10 @@ connection: "snowflake_test"
 
 include: "/views/*.view.lkml"                # include all views in the views/ folder in this
 
+datagroup: daily_refresh {
+  max_cache_age: "24 hours"
+}
+
 explore: orders {
    sql_always_where: ${orders.city} = 'New York City' ;;
   always_filter: {
