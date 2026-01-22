@@ -1,6 +1,6 @@
 dashboard: test {
 title: "Test"
-model: model
+model: snowflake_test
 explore: orders
 layout: newspaper
 preferred_viewer: dashboards-next
@@ -12,7 +12,7 @@ elements: [
   type: looker_column,
 
   query: {
-  model: model,
+  model: snowflake_test,
   explore: orders,
   dimensions: [orders.city],
 measures: [orders.count]
