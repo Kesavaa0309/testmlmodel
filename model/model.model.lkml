@@ -1,6 +1,7 @@
 connection: "snowflake_test"
 
 include: "/views/*.view.lkml"
+include: "/dashboards/*.dashboard"
 
 datagroup: daily_refresh {
   sql_trigger: SELECT MAX(orderid) FROM orders ;;
