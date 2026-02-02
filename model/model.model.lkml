@@ -10,10 +10,10 @@ datagroup: daily_refresh {
 
 explore: orders {
   persist_for: "24 hours"
-   sql_always_where: ${orders.city} = 'New York City' ;;
-  always_filter: {
-    filters: [orders.category: "Furniture"]
-  }
+   #sql_always_where: ${orders.city} = 'New York City' ;;
+  #always_filter: {
+  #  filters: [orders.category: "Furniture"]
+ # }
   join: returns {
     type: left_outer
     relationship: one_to_one
