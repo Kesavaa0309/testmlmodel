@@ -35,6 +35,14 @@ view: orders {
     type: string
     sql: ${TABLE}."ORDERDATE" ;;
   }
+  dimension_group: orderdate {
+    type: time
+    description: "Order Date"
+    timeframes: [raw, date, week, month, quarter, year]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.ORDERDATE ;;
+  }
   dimension: postalcode {
     type: string
     sql: ${TABLE}."POSTALCODE" ;;
@@ -72,9 +80,13 @@ view: orders {
     type: string
     sql: ${TABLE}."SEGMENT" ;;
   }
-  dimension: shipdate {
-    type: string
-    sql: ${TABLE}."SHIPDATE" ;;
+  dimension_group: shipdate {
+    type: time
+    description: "Ship Date"
+    timeframes: [raw, date, week, month, quarter, year]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.SHIPDATE ;;
   }
   dimension: shipmode {
     type: string

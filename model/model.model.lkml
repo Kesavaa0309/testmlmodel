@@ -16,7 +16,7 @@ explore: orders {
  # }
   join: returns {
     type: left_outer
-    relationship: one_to_one
+    relationship: many_to_many
     sql_on: ${orders.orderid}=${returns.order_id} ;;
   }
 }
