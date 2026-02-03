@@ -5,10 +5,12 @@ view: orders {
   dimension: order_id {
     primary_key: yes
     type: string
+    description: "The unique identifier for each transaction. Use this for counting specific orders."
     sql: ${TABLE}."ORDER_ID" ;;
   }
   dimension: category {
     type: string
+    description: "The broad grouping of products, such as Furniture, Technology, or Office Supplies."
     sql: ${TABLE}."CATEGORY" ;;
   }
   dimension: city {
@@ -26,6 +28,7 @@ view: orders {
   }
   dimension: customer_name {
     type: string
+    description: "The name of the person who placed the order."
     sql: ${TABLE}."CUSTOMER_NAME" ;;
   }
   dimension: discount {
@@ -92,6 +95,7 @@ view: orders {
   }
   dimension: subcategory {
     type: string
+    description: "More specific product grouping (e.g., Chairs, Phones, Paper)."
     sql: ${TABLE}."Sub-Category" ;;
   }
   measure: count {
