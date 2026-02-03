@@ -54,12 +54,12 @@ view: orders {
     type: string
     sql: ${TABLE}."PRODUCT_NAME" ;;
   }
-  dimension: profit {
-    type: number
+  measure: profit {
+    type: sum
     sql: ${TABLE}."PROFIT" ;;
   }
-  dimension: quantity {
-    type: number
+  measure: quantity {
+    type: sum
     sql: ${TABLE}."QUANTITY" ;;
   }
   dimension: region {
@@ -70,8 +70,8 @@ view: orders {
     type: number
     sql: ${TABLE}."ROW_ID" ;;
   }
-  dimension: sales {
-    type: number
+  measure: sales {
+    type: sum
     sql: ${TABLE}."SALES" ;;
   }
   dimension: segment {
