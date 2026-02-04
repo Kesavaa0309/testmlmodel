@@ -31,8 +31,8 @@ view: orders {
     description: "The name of the person who placed the order."
     sql: ${TABLE}."CUSTOMER_NAME" ;;
   }
-  dimension: discount {
-    type: number
+  measure: discount {
+    type: sum
     sql: ${TABLE}."DISCOUNT" ;;
   }
   dimension_group: order {
