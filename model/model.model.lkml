@@ -9,6 +9,10 @@ include: "/dashboards/*.dashboard"
 #}
 
 explore: orders {
+  join: maximum_date {
+    type: cross
+    relationship: one_to_one
+  }
   #persist_for: "24 hours"
    #sql_always_where: ${orders.city} = 'New York City' ;;
   #always_filter: {

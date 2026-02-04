@@ -35,7 +35,7 @@ view: orders {
     type: sum
     sql: ${TABLE}."DISCOUNT" ;;
   }
-  dimension_group: order {
+  dimension_group: order_date {
     type: time
     timeframes: [raw, date, week, month, quarter, year]
     convert_tz: no
@@ -43,7 +43,7 @@ view: orders {
     sql: ${TABLE}."ORDER_DATE" ;;
   }
   dimension: postal_code {
-    type: number
+    type: zipcode
     sql: ${TABLE}."POSTAL_CODE" ;;
   }
   dimension: product_id {
@@ -101,5 +101,32 @@ view: orders {
   measure: count {
     type: count
     drill_fields: [order_id, product_name, customer_name]
+  }
+
+  parameter: Date_Range {
+    type: string
+    label: "date range"
+    default_value: "last 52 weeks"
+
+    allowed_value: {
+      label: "last 52 weeks"
+      value: "last 52 weeks"
+    }
+    allowed_value: {
+      label: "last 26 weeks"
+      value: "last 26 weeks"
+    }
+    allowed_value: {
+      label: "last 13 weeks"
+      value: "last 13 weeks"
+    }
+    allowed_value: {
+      label: "last 4 weeks"
+      value: "last 4 weeks"
+    }
+    allowed_value: {
+      label: "YTD"
+      value: "YTD"
+    }
   }
 }
