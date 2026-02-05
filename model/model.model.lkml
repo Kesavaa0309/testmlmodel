@@ -9,7 +9,7 @@ include: "/dashboards/*.dashboard"
 #}
 
 explore: orders {
-  join: maximum_date {
+  join: max_date {
     type: cross
     relationship: one_to_one
   }

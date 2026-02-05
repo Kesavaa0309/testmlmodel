@@ -129,4 +129,130 @@ view: orders {
       value: "YTD"
     }
   }
+
+  dimension: date_filter {
+    type: string
+    label: "date_filter"
+    hidden: no
+    sql:
+    CASE
+      WHEN {% parameter Date_Range %} = 'last 52 weeks' THEN
+        CASE
+          WHEN DATE(${TABLE}.order_date) >= DATEADD('week', -51, DATE(${max_date.max_week_ending})) AND
+               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
+        END
+      WHEN {% parameter Date_Range %} = 'last 26 weeks' THEN
+        CASE
+          WHEN DATE(${TABLE}.order_date) >= DATEADD('week', -25, DATE(${max_date.max_week_ending})) AND
+               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
+        END
+      WHEN {% parameter Date_Range %} = 'last 13 weeks' THEN
+        CASE
+          WHEN DATE(${TABLE}.order_date) >= DATEADD('week', -12, DATE(${max_date.max_week_ending})) AND
+               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
+        END
+      WHEN {% parameter Date_Range %} = 'last 4 weeks' THEN
+        CASE
+          WHEN DATE(${TABLE}.order_date) >= DATEADD('week', -3, DATE(${max_date.max_week_ending})) AND
+               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
+        END
+      WHEN {% parameter Date_Range %} = 'YTD' THEN
+        CASE
+          WHEN EXTRACT(YEAR FROM DATE(${TABLE}.order_date)) = EXTRACT(YEAR FROM DATE(${max_date.max_week_ending})) AND
+               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
+        END
+    END ;;
+  }
+
+  dimension: date_filter_comparison {
+
+    type: string
+    label: "date_filter_comparison"
+    hidden: no
+    sql:
+    CASE
+      WHEN {% parameter Date_Range %} = 'last 52 weeks' THEN
+        CASE
+          WHEN DATE(${TABLE}.order_date) BETWEEN DATEADD('week', -103, DATE(${max_date.max_week_ending}))
+                                            AND DATEADD('week', -52, DATE(${max_date.max_week_ending}))
+          THEN TO_CHAR(${TABLE}.order_date, 'YYYY-MM-DD')
+        END
+      WHEN {% parameter Date_Range %} = 'last 26 weeks' THEN
+        CASE
+          WHEN DATE(${TABLE}.order_date) BETWEEN DATEADD('week', -51, DATE(${max_date.max_week_ending}))
+                                            AND DATEADD('week', -26, DATE(${max_date.max_week_ending}))
+          THEN TO_CHAR(${TABLE}.order_date, 'YYYY-MM-DD')
+        END
+      WHEN {% parameter Date_Range %} = 'last 13 weeks' THEN
+        CASE
+          WHEN DATE(${TABLE}.order_date) BETWEEN DATEADD('week', -25, DATE(${max_date.max_week_ending}))
+                                            AND DATEADD('week', -13, DATE(${max_date.max_week_ending}))
+          THEN TO_CHAR(${TABLE}.order_date, 'YYYY-MM-DD')
+        END
+      WHEN {% parameter Date_Range %} = 'last 4 weeks' THEN
+        CASE
+          WHEN DATE(${TABLE}.order_date) BETWEEN DATEADD('week', -7, DATE(${max_date.max_week_ending}))
+                                            AND DATEADD('week', -4, DATE(${max_date.max_week_ending}))
+          THEN TO_CHAR(${TABLE}.order_date, 'YYYY-MM-DD')
+        END
+      WHEN {% parameter Date_Range %} = 'YTD' THEN
+        CASE
+          WHEN EXTRACT(YEAR FROM DATE(${TABLE}.order_date)) = EXTRACT(YEAR FROM DATEADD('year', -1, DATE(${max_date.max_week_ending})))
+               AND DATE(${TABLE}.order_date) <= DATEADD('year', -1, DATE(${max_date.max_week_ending}))
+          THEN TO_CHAR(${TABLE}.order_date, 'YYYY-MM-DD')
+        END
+    END ;;
+  }
+  measure: Sales_date_filter_not_null{
+    type: sum
+    label: "Current Sales"
+    sql:
+        CASE WHEN ${date_filter} IS NOT NULL THEN ${TABLE}."SALES"
+        ELSE 0
+        END;;
+    value_format_name: usd_0
+  }
+  measure: Sales_date_filter_comparison_not_null{
+    type: sum
+    label: "Previous Sales"
+    sql:
+        CASE WHEN ${date_filter_comparison} IS NOT NULL THEN ${TABLE}."SALES"
+        ELSE 0
+        END;;
+    value_format_name: usd_0
+  }
+  measure: Orders_date_filter_not_null{
+    type: count_distinct
+    label: "Current Orders"
+    sql:
+        CASE WHEN ${date_filter} IS NOT NULL THEN ${order_id}
+        ELSE 0
+        END;;
+  }
+  measure: Orders_date_filter_comparison_not_null{
+    type: count_distinct
+    label: "Previous Orders"
+    sql:
+        CASE WHEN ${date_filter_comparison} IS NOT NULL THEN ${order_id}
+        ELSE 0
+        END;;
+  }
+  measure: Profit_date_filter_not_null{
+    type: sum
+    label: "Current Profit"
+    sql:
+        CASE WHEN ${date_filter} IS NOT NULL THEN ${TABLE}."PROFIT"
+        ELSE 0
+        END;;
+    value_format_name: usd_0
+  }
+  measure: Profit_date_filter_comparison_not_null{
+    type: sum
+    label: "Previous Profit"
+    sql:
+        CASE WHEN ${date_filter_comparison} IS NOT NULL THEN ${TABLE}."PROFIT"
+        ELSE 0
+        END;;
+    value_format_name: usd_0
+  }
 }
