@@ -221,21 +221,17 @@ view: orders {
         END;;
     value_format_name: usd_0
   }
-  measure: Orders_date_filter_not_null{
+  measure: current_orders_filtered {
     type: count_distinct
-    label: "Current Orders"
-    sql:
-        CASE WHEN ${date_filter} IS NOT NULL THEN ${order_id}
-        ELSE 0
-        END;;
+    label: "Current Order"
+    sql: ${TABLE}."ORDER_ID" ;;
+    filters: [date_filter: "-NULL"]  # This means "Where date_filter is NOT NULL"
   }
-  measure: Orders_date_filter_comparison_not_null{
+  measure: Orders_date_filter_comparison_not_null {
     type: count_distinct
-    label: "Previous Orders"
-    sql:
-        CASE WHEN ${date_filter_comparison} IS NOT NULL THEN ${order_id}
-        ELSE 0
-        END;;
+    label: "Previous Order"
+    sql: ${TABLE}."ORDER_ID" ;;
+    filters: [date_filter_comparison: "-NULL"]  # This means "Where date_filter is NOT NULL"
   }
   measure: Profit_date_filter_not_null{
     type: sum
@@ -251,6 +247,24 @@ view: orders {
     label: "Previous Profit"
     sql:
         CASE WHEN ${date_filter_comparison} IS NOT NULL THEN ${TABLE}."PROFIT"
+        ELSE 0
+        END;;
+    value_format_name: usd_0
+  }
+  measure: Discount_date_filter_not_null{
+    type: sum
+    label: "Current Discount"
+    sql:
+        CASE WHEN ${date_filter} IS NOT NULL THEN ${TABLE}."DISCOUNT"
+        ELSE 0
+        END;;
+    value_format_name: usd_0
+  }
+  measure: Discount_date_filter_comparison_not_null{
+    type: sum
+    label: "Previous Discount"
+    sql:
+        CASE WHEN ${date_filter_comparison} IS NOT NULL THEN ${TABLE}."DISCOUNT"
         ELSE 0
         END;;
     value_format_name: usd_0
