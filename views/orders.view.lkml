@@ -44,6 +44,7 @@ view: orders {
   }
   dimension: postal_code {
     type: zipcode
+    map_layer_name:  us_zipcode_tabulation_areas
     sql: ${TABLE}."POSTAL_CODE" ;;
   }
   dimension: product_id {
