@@ -1,7 +1,7 @@
 
 view: maximum_date {
   derived_table: {
-    sql: select max(order_date) as max_date from PUBLIC.ORDERS ;;
+    sql: select max(order_date) as max_date from default.orders ;;
   }
 
   measure: count {

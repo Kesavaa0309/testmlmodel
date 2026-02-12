@@ -1,5 +1,5 @@
 view: orders {
-  sql_table_name: "PUBLIC"."ORDERS" ;;
+  sql_table_name: default.orders ;;
   drill_fields: [order_id]
 
   dimension: order_id {
