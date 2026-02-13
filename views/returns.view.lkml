@@ -1,5 +1,5 @@
 view: returns {
-  sql_table_name: default.returns ;;
+  sql_table_name: "PUBLIC"."RETURNS" ;;
 
   dimension: order_id {
     type: string

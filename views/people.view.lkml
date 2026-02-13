@@ -1,5 +1,5 @@
 view: people {
-  sql_table_name: default.people ;;
+  sql_table_name: "PUBLIC"."PEOPLE" ;;
 
   dimension: region {
     type: string
