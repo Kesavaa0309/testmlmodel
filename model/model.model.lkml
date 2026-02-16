@@ -1,4 +1,4 @@
-connection: "data-bricks"
+connection: "snowflake_test"
 
 include: "/views/*.view.lkml"
 include: "/dashboards/*.dashboard"
