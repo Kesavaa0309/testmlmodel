@@ -1,7 +1,6 @@
-
 view: custom_sql_query1 {
   derived_table: {
-    sql: {% raw %} select ORDERID, CITY, CATEGORY from PUBLIC.ORDERS {% endraw %} ;;
+    sql: {% raw %} select ORDERID, CITY, CATEGORY from `PUBLIC`.ORDERS {% endraw %} ;;
   }
 
   measure: count {
@@ -11,17 +10,17 @@ view: custom_sql_query1 {
 
   dimension: orderid {
     type: string
-    sql: ${TABLE}."ORDERID" ;;
+    sql: ${TABLE}.ORDERID ;;
   }
 
   dimension: city {
     type: string
-    sql: ${TABLE}."CITY" ;;
+    sql: ${TABLE}.CITY ;;
   }
 
   dimension: category {
     type: string
-    sql: ${TABLE}."CATEGORY" ;;
+    sql: ${TABLE}.CATEGORY ;;
   }
 
   set: detail {
