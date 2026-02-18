@@ -1,14 +1,14 @@
 view: returns {
-  sql_table_name: "PUBLIC"."RETURNS" ;;
+  sql_table_name: `default`.returns ;;
 
   dimension: order_id {
     type: string
     # hidden: yes
-    sql: ${TABLE}."Order ID" ;;
+    sql: ${TABLE}.`Order ID` ;;
   }
   dimension: returned {
     type: string
-    sql: ${TABLE}."Returned" ;;
+    sql: ${TABLE}.`Returned` ;;
   }
   measure: count {
     type: count
