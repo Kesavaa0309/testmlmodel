@@ -1,7 +1,6 @@
-
 view: maximum_date {
   derived_table: {
-    sql: select max(order_date) as max_date from public.orders ;;
+    sql: select max(order_date) as max_date from `orders` ;;
   }
 
   measure: count {
@@ -11,7 +10,7 @@ view: maximum_date {
 
   dimension: max_date {
     type: date
-    sql: ${TABLE}."MAX_DATE" ;;
+    sql: ${TABLE}.`MAX_DATE` ;;
   }
 
   set: detail {
