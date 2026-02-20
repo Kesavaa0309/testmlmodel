@@ -1,6 +1,6 @@
 view: max_date {
   derived_table: {
-    sql: {% raw %} select max(ORDER_DATE) as max_week_ending from db.orders {% endraw %} ;;
+    sql: {% raw %} select max(ORDER_DATE) as max_week_ending from default.orders {% endraw %} ;;
   }
 
   measure: count {

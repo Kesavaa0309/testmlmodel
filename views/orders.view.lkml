@@ -1,5 +1,5 @@
 view: orders {
-  sql_table_name: `orders` ;;
+  sql_table_name: default.`orders` ;;
   drill_fields: [order_id]
 
   dimension: order_id {
@@ -40,20 +40,20 @@ view: orders {
     timeframes: [raw, date, week, month, quarter, year]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}.`ORDER_DATE` ;;
+    sql: ${TABLE}.`ORDER DATE` ;;
   }
   dimension: postal_code {
     type: zipcode
     map_layer_name:  us_zipcode_tabulation_areas
-    sql: ${TABLE}.`POSTAL_CODE` ;;
+    sql: ${TABLE}.`POSTAL CODE` ;;
   }
   dimension: product_id {
     type: string
-    sql: ${TABLE}.`PRODUCT_ID` ;;
+    sql: ${TABLE}.`PRODUCT ID` ;;
   }
   dimension: product_name {
     type: string
-    sql: ${TABLE}.`PRODUCT_NAME` ;;
+    sql: ${TABLE}.`PRODUCT NAME` ;;
   }
   measure: profit {
     type: sum
@@ -69,7 +69,7 @@ view: orders {
   }
   dimension: row_id {
     type: number
-    sql: ${TABLE}.`ROW_ID` ;;
+    sql: ${TABLE}.`ROW ID` ;;
   }
   measure: sales {
     type: sum
@@ -84,11 +84,11 @@ view: orders {
     timeframes: [raw, date, week, month, quarter, year]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}.`SHIP_DATE` ;;
+    sql: ${TABLE}.`SHIP DATE` ;;
   }
   dimension: ship_mode {
     type: string
-    sql: ${TABLE}.`SHIP_MODE` ;;
+    sql: ${TABLE}.`SHIP MODE` ;;
   }
   dimension: state {
     type: string
