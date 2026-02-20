@@ -7,3 +7,9 @@
       model: model
       explore: orders
       measures: [orders.count]
+
+    - name: Yearly_sales
+      type: looker_bar
+      model: model
+      explore: orders
+      measures: [orders.sales]
