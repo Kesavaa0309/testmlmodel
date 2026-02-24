@@ -6,7 +6,7 @@ view: orders {
     primary_key: yes
     type: string
     description: "The unique identifier for each transaction. Use this for counting specific orders."
-    sql: ${TABLE}.`ORDER_ID` ;;
+    sql: ${TABLE}.`ORDER ID` ;;
   }
   dimension: category {
     type: string
@@ -24,12 +24,12 @@ view: orders {
   }
   dimension: customer_id {
     type: string
-    sql: ${TABLE}.`CUSTOMER_ID` ;;
+    sql: ${TABLE}.`CUSTOMER ID` ;;
   }
   dimension: customer_name {
     type: string
     description: "The name of the person who placed the order."
-    sql: ${TABLE}.`CUSTOMER_NAME` ;;
+    sql: ${TABLE}.`CUSTOMER NAME` ;;
   }
   measure: discount {
     type: sum
@@ -137,32 +137,41 @@ view: orders {
     hidden: no
     sql:
     CASE
-      WHEN {% parameter Date_Range %} = 'last 52 weeks' THEN
-        CASE
-          WHEN DATE(${TABLE}.order_date) >= DATE_ADD(DATE(${max_date.max_week_ending}), -51, 'day') AND
-               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
-        END
-      WHEN {% parameter Date_Range %} = 'last 26 weeks' THEN
-        CASE
-          WHEN DATE(${TABLE}.order_date) >= DATE_ADD(DATE(${max_date.max_week_ending}), -25, 'day') AND
-               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
-        END
-      WHEN {% parameter Date_Range %} = 'last 13 weeks' THEN
-        CASE
-          WHEN DATE(${TABLE}.order_date) >= DATE_ADD(DATE(${max_date.max_week_ending}), -12, 'day') AND
-               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
-        END
-      WHEN {% parameter Date_Range %} = 'last 4 weeks' THEN
-        CASE
-          WHEN DATE(${TABLE}.order_date) >= DATE_ADD(DATE(${max_date.max_week_ending}), -3, 'day') AND
-               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
-        END
-      WHEN {% parameter Date_Range %} = 'YTD' THEN
-        CASE
-          WHEN YEAR(DATE(${TABLE}.order_date)) = YEAR(DATE(${max_date.max_week_ending})) AND
-               DATE(${TABLE}.order_date) <= DATE(${max_date.max_week_ending}) THEN ${TABLE}.order_date
-        END
-    END ;;
+  WHEN {% parameter Date_Range %} = 'last 52 weeks' THEN
+    CASE
+      WHEN date_trunc('week', ${TABLE}.`Order Date`) >= date_add(date_trunc('week', ${max_date.max_week_ending}), -357)
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= date_trunc('week', ${max_date.max_week_ending})
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+
+  WHEN {% parameter Date_Range %} = 'last 26 weeks' THEN
+    CASE
+      WHEN date_trunc('week', ${TABLE}.`Order Date`) >= date_add(date_trunc('week', ${max_date.max_week_ending}), -175)
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= date_trunc('week', ${max_date.max_week_ending})
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+
+  WHEN {% parameter Date_Range %} = 'last 13 weeks' THEN
+    CASE
+      WHEN date_trunc('week', ${TABLE}.`Order Date`) >= date_add(date_trunc('week', ${max_date.max_week_ending}), -84)
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= date_trunc('week', ${max_date.max_week_ending})
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+
+  WHEN {% parameter Date_Range %} = 'last 4 weeks' THEN
+    CASE
+      WHEN date_trunc('week', ${TABLE}.`Order Date`) >= date_add(date_trunc('week', ${max_date.max_week_ending}), -21)
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= date_trunc('week', ${max_date.max_week_ending})
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+
+  WHEN {% parameter Date_Range %} = 'YTD' THEN
+    CASE
+      WHEN year(date_trunc('week', ${TABLE}.`Order Date`)) = year(${max_date.max_week_ending})
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= date_trunc('week', ${max_date.max_week_ending})
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+END ;;
   }
 
   dimension: date_filter_comparison {
@@ -172,37 +181,44 @@ view: orders {
     hidden: no
     sql:
     CASE
-      WHEN {% parameter Date_Range %} = 'last 52 weeks' THEN
-        CASE
-          WHEN DATE(${TABLE}.order_date) BETWEEN DATE_ADD(DATE(${max_date.max_week_ending}), -103, 'day')
-                                            AND DATE_ADD(DATE(${max_date.max_week_ending}), -52, 'day')
-          THEN TO_DATE(${TABLE}.order_date)
-        END
-      WHEN {% parameter Date_Range %} = 'last 26 weeks' THEN
-        CASE
-          WHEN DATE(${TABLE}.order_date) BETWEEN DATE_ADD(DATE(${max_date.max_week_ending}), -51, 'day')
-                                            AND DATE_ADD(DATE(${max_date.max_week_ending}), -26, 'day')
-          THEN TO_DATE(${TABLE}.order_date)
-        END
-      WHEN {% parameter Date_Range %} = 'last 13 weeks' THEN
-        CASE
-          WHEN DATE(${TABLE}.order_date) BETWEEN DATE_ADD(DATE(${max_date.max_week_ending}), -25, 'day')
-                                            AND DATE_ADD(DATE(${max_date.max_week_ending}), -13, 'day')
-          THEN TO_DATE(${TABLE}.order_date)
-        END
-      WHEN {% parameter Date_Range %} = 'last 4 weeks' THEN
-        CASE
-          WHEN DATE(${TABLE}.order_date) BETWEEN DATE_ADD(DATE(${max_date.max_week_ending}), -7, 'day')
-                                            AND DATE_ADD(DATE(${max_date.max_week_ending}), -4, 'day')
-          THEN TO_DATE(${TABLE}.order_date)
-        END
-      WHEN {% parameter Date_Range %} = 'YTD' THEN
-        CASE
-          WHEN YEAR(DATE(${TABLE}.order_date)) = YEAR(DATE_ADD(DATE(${max_date.max_week_ending}), -1, 'year'))
-               AND DATE(${TABLE}.order_date) <= DATE_ADD(DATE(${max_date.max_week_ending}), -1, 'year')
-          THEN TO_DATE(${TABLE}.order_date)
-        END
-    END ;;
+  WHEN {% parameter Date_Range %} = 'last 52 weeks' THEN
+    CASE
+      -- Period: 52 weeks prior to the "Current" 52-week window
+      WHEN date_trunc('week', ${TABLE}.`Order Date`) >= date_add(date_trunc('week', ${max_date.max_week_ending}), -721)
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= date_add(date_trunc('week', ${max_date.max_week_ending}), -364)
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+
+  WHEN {% parameter Date_Range %} = 'last 26 weeks' THEN
+    CASE
+      -- Period: 26 weeks prior to the "Current" 26-week window
+      WHEN date_trunc('week', ${TABLE}.`Order Date`) >= date_add(date_trunc('week', ${max_date.max_week_ending}), -357)
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= date_add(date_trunc('week', ${max_date.max_week_ending}), -182)
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+
+  WHEN {% parameter Date_Range %} = 'last 13 weeks' THEN
+    CASE
+      WHEN date_trunc('week', ${TABLE}.`Order Date`) >= date_add(date_trunc('week', ${max_date.max_week_ending}), -175)
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= date_add(date_trunc('week', ${max_date.max_week_ending}), -91)
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+
+  WHEN {% parameter Date_Range %} = 'last 4 weeks' THEN
+    CASE
+      WHEN date_trunc('week', ${TABLE}.`Order Date`) > date_add(date_trunc('week', ${max_date.max_week_ending}), -56)
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= date_add(date_trunc('week', ${max_date.max_week_ending}), -28)
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+
+  WHEN {% parameter Date_Range %} = 'YTD' THEN
+    CASE
+      -- Prior Year to Date (PYTD): Same year-day range, but for the previous year
+      WHEN year(date_trunc('week', ${TABLE}.`Order Date`)) = year(add_months(${max_date.max_week_ending}, -12))
+       AND date_trunc('week', ${TABLE}.`Order Date`) <= add_months(date_trunc('week', ${max_date.max_week_ending}), -12)
+      THEN date_trunc('week', ${TABLE}.`Order Date`)
+    END
+END ;;
   }
   measure: Sales_date_filter_not_null{
     type: sum
@@ -225,13 +241,13 @@ view: orders {
   measure: current_orders_filtered {
     type: count_distinct
     label: "Current Order"
-    sql: ${TABLE}.`ORDER_ID` ;;
+    sql: ${TABLE}.`ORDER ID` ;;
     filters: [date_filter: "-NULL"]  # This means "Where date_filter is NOT NULL"
   }
   measure: Orders_date_filter_comparison_not_null {
     type: count_distinct
     label: "Previous Order"
-    sql: ${TABLE}.`ORDER_ID` ;;
+    sql: ${TABLE}.`ORDER ID` ;;
     filters: [date_filter_comparison: "-NULL"]  # This means "Where date_filter is NOT NULL"
   }
   measure: Profit_date_filter_not_null{

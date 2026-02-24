@@ -9,6 +9,10 @@ include: "/dashboards/*.dashboard"
 #}
 
 explore: orders {
+  #access_filter: {
+  #  field: orders.region
+  #  user_attribute: region_access
+  #}
   join: max_date {
     type: cross
     relationship: one_to_one
